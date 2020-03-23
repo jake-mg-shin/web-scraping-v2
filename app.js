@@ -15,9 +15,6 @@ loop = () => {
     let links1 = [];
     let links2 = [];
 
-    // Write header on CSV
-    writeStream.write(`volunteerConnector \n`);
-
     getData = async () => {
       await links2.forEach(link => {
         axios
@@ -34,21 +31,31 @@ loop = () => {
                 .text();
               const address = $(this)
                 .find("div.address")
-                .text();
+                .text()
+                .slice(20)
+                .trim()
+                .replace(/(\s*)/g, "");
               const phone = $(this)
                 .find("div.phone")
-                .text();
+                .text()
+                .trim();
               const email = $(this)
                 .find("div.email")
+                .children("a")
                 .text();
               const website = $(this)
                 .find("div.website")
+                .children("a")
                 .text();
 
-              console.log(name, address, phone, email, website);
+              console.log(name, phone, email, website, address);
+
+              // Write header on CSV
+              // writeStream.write(`name, address, phone, email, website \n`);
+
               // Write row to CSV
               writeStream.write(
-                `${name}, ${address}, ${phone}, ${email}, ${website} \n`
+                `${name}, ${phone}, ${email}, ${website}, ${address} \n`
               );
             });
           })
@@ -103,18 +110,16 @@ loop = () => {
     init();
   }
 };
+
 // loop();
 
-const writeStream = fs.createWriteStream("volunteerConnector1.csv");
+const writeStream = fs.createWriteStream("volunteerConnector24.csv");
 
-const url1 = "https://www.volunteerconnector.org/organizations/page-1/";
+const url1 = "https://www.volunteerconnector.org/organizations/page-24/";
 const url2 = "https://www.volunteerconnector.org";
 
 let links1 = [];
 let links2 = [];
-
-// Write header on CSV
-writeStream.write(`volunteerConnector \n`);
 
 getData = async () => {
   await links2.forEach(link => {
@@ -132,21 +137,31 @@ getData = async () => {
             .text();
           const address = $(this)
             .find("div.address")
-            .text();
+            .text()
+            .slice(20)
+            .trim()
+            .replace(/(\s*)/g, "");
           const phone = $(this)
             .find("div.phone")
-            .text();
+            .text()
+            .trim();
           const email = $(this)
             .find("div.email")
+            .children("a")
             .text();
           const website = $(this)
             .find("div.website")
+            .children("a")
             .text();
 
-          console.log(name, address, phone, email, website);
+          console.log(name, phone, email, website, address);
+
+          // Write header on CSV
+          // writeStream.write(`name, address, phone, email, website \n`);
+
           // Write row to CSV
           writeStream.write(
-            `${name}, ${address}, ${phone}, ${email}, ${website} \n`
+            `${name}, ${phone}, ${email}, ${website}, ${address} \n`
           );
         });
       })
